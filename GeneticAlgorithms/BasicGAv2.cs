@@ -64,12 +64,15 @@ class GeneticAlgorithm
         double[][] selected = new double[PopulationSize][];
         for (int i = 0; i < PopulationSize; i++)
         {
+            // Randomly select two individuals from the population
             int first = rand.Next(PopulationSize);
             int second = rand.Next(PopulationSize);
+            // Choose the one with better fitness to be part of the mating pool
             selected[i] = fitness[first] > fitness[second] ? population[first] : population[second];
         }
         return selected;
     }
+
 
     static double[][] Crossover(double[][] selected)
     {
@@ -80,13 +83,16 @@ class GeneticAlgorithm
             offspring[i + 1] = new double[GeneCount];
             for (int j = 0; j < GeneCount; j++)
             {
+                // Perform crossover with a certain probability
                 if (rand.NextDouble() < CrossoverRate)
                 {
+                    // If crossover occurs, offspring inherit genes directly from parents
                     offspring[i][j] = selected[i][j];
                     offspring[i + 1][j] = selected[i + 1][j];
                 }
                 else
                 {
+                    // If crossover does not occur, swap genes between parents
                     offspring[i][j] = selected[i + 1][j];
                     offspring[i + 1][j] = selected[i][j];
                 }
@@ -101,10 +107,12 @@ class GeneticAlgorithm
         {
             for (int j = 0; j < GeneCount; j++)
             {
+                // With a certain probability, mutate a gene
                 if (rand.NextDouble() < MutationRate)
                 {
+                    // Apply a small change to the gene value
                     offspring[i][j] += (rand.NextDouble() * 2 - 1) * (MaxValue - MinValue) * MutationRate;
-                    // Ensure the mutated gene is within bounds
+                    // Ensure the mutated gene is within the predefined bounds
                     offspring[i][j] = Math.Max(MinValue, Math.Min(MaxValue, offspring[i][j]));
                 }
             }
